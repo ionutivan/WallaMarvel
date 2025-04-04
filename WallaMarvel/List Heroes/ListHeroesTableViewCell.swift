@@ -36,10 +36,12 @@ final class ListHeroesTableViewCell: UITableViewCell {
     }
     
     private func addContraints() {
+        let imageViewHeightConstraint = heroeImageView.heightAnchor.constraint(equalToConstant: 80)
+        imageViewHeightConstraint.priority = .defaultHigh
         NSLayoutConstraint.activate([
             heroeImageView.leadingAnchor.constraint(equalTo: leadingAnchor, constant: 12),
             heroeImageView.topAnchor.constraint(equalTo: topAnchor, constant: 12),
-            heroeImageView.heightAnchor.constraint(equalToConstant: 80),
+            imageViewHeightConstraint,
             heroeImageView.widthAnchor.constraint(equalToConstant: 80),
             heroeImageView.bottomAnchor.constraint(equalTo: bottomAnchor, constant: -12),
             
