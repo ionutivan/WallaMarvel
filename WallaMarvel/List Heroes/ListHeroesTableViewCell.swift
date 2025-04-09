@@ -3,9 +3,18 @@ import UIKit
 import Kingfisher
 
 final class ListHeroesTableViewCell: UITableViewCell, Reusable {
+    enum Constants {
+        static let margin: CGFloat = 12
+        static let imageWidth: CGFloat = 80
+    }
+    
     private let heroeImageView: UIImageView = {
         let imageView = UIImageView()
         imageView.translatesAutoresizingMaskIntoConstraints = false
+        // images don't seem to have all the same size
+        // the following options avoid image distortion
+        imageView.contentMode = .scaleAspectFit
+        imageView.clipsToBounds = true
         return imageView
     }()
     
@@ -36,17 +45,20 @@ final class ListHeroesTableViewCell: UITableViewCell, Reusable {
     }
     
     private func addContraints() {
-        let imageViewHeightConstraint = heroeImageView.heightAnchor.constraint(equalToConstant: 80)
+        let imageViewHeightConstraint = heroeImageView.heightAnchor.constraint(equalToConstant: Constants.imageWidth)
         imageViewHeightConstraint.priority = .defaultHigh
         NSLayoutConstraint.activate([
-            heroeImageView.leadingAnchor.constraint(equalTo: leadingAnchor, constant: 12),
-            heroeImageView.topAnchor.constraint(equalTo: topAnchor, constant: 12),
+            heroeImageView.leadingAnchor.constraint(equalTo: leadingAnchor, constant: Constants.margin),
+            heroeImageView.topAnchor.constraint(equalTo: topAnchor, constant: Constants.margin),
             imageViewHeightConstraint,
-            heroeImageView.widthAnchor.constraint(equalToConstant: 80),
-            heroeImageView.bottomAnchor.constraint(equalTo: bottomAnchor, constant: -12),
+            heroeImageView.widthAnchor.constraint(equalToConstant: Constants.imageWidth),
+            heroeImageView.bottomAnchor.constraint(equalTo: bottomAnchor, constant: -Constants.margin),
             
-            heroeName.leadingAnchor.constraint(equalTo: heroeImageView.trailingAnchor, constant: 12),
-            heroeName.topAnchor.constraint(equalTo: heroeImageView.topAnchor, constant: 8),
+            heroeName.leadingAnchor.constraint(equalTo: heroeImageView.trailingAnchor, constant: Constants.margin),
+            heroeName.trailingAnchor.constraint(equalTo: trailingAnchor, constant: -Constants.margin),
+            heroeName.topAnchor.constraint(equalTo: topAnchor, constant: Constants.margin),
+            // although improbable, this stops the heroe title overflow out of the cell
+            heroeName.bottomAnchor.constraint(lessThanOrEqualTo: bottomAnchor, constant: -Constants.margin),
         ])
     }
     
