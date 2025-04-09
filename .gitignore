@@ -3,7 +3,7 @@
 
 ### CocoaPods ###
 ## CocoaPods GitIgnore Template
-
+WallaMarvel/Secrets.xcconfig
 # CocoaPods - Only use to conserve bandwidth / Save time on Pushing
 #           - Also handy if you have a large number of dependant pods
 #           - AS PER https://guides.cocoapods.org/using/using-cocoapods.html NEVER IGNORE THE LOCK FILE
@@ -105,4 +105,5 @@ iOSInjectionProject/
 /*.gcno
 **/xcshareddata/WorkspaceSettings.xcsettings
 
+WallaMarvel/Secrets.xcconfig
 # End of https://www.toptal.com/developers/gitignore/api/cocoapods,swift,xcode
