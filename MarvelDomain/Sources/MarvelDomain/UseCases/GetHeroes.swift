@@ -1,17 +1,18 @@
 import Foundation
+import MarvelData
 
-protocol GetHeroesUseCaseProtocol {
+public protocol GetHeroesUseCaseProtocol {
     func execute(offset: Int) async throws -> CharacterDataContainer
 }
 
-struct GetHeroes: GetHeroesUseCaseProtocol {
+public struct GetHeroes: GetHeroesUseCaseProtocol {
     private let repository: MarvelRepositoryProtocol
     
-    init(repository: MarvelRepositoryProtocol = MarvelRepository()) {
+    public init(repository: MarvelRepositoryProtocol) {
         self.repository = repository
     }
     
-    func execute(offset: Int) async throws -> CharacterDataContainer {
+    public func execute(offset: Int) async throws -> CharacterDataContainer {
         try await repository.getHeroes(offset: offset)
     }
 }

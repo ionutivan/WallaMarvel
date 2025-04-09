@@ -1,4 +1,6 @@
 import Foundation
+import MarvelData
+import MarvelDomain
 
 protocol ListHeroesPresenterProtocol: AnyObject {
     var ui: ListHeroesUI? { get set }
@@ -22,7 +24,7 @@ final class ListHeroesPresenter: ListHeroesPresenterProtocol {
     private var isLoading = false
     private var allHeroesLoaded = false
 
-    init(getHeroesUseCase: GetHeroesUseCaseProtocol = GetHeroes()) {
+    init(getHeroesUseCase: GetHeroesUseCaseProtocol) {
         self.getHeroesUseCase = getHeroesUseCase
     }
 

@@ -1,4 +1,6 @@
 import Foundation
+import MarvelData
+import MarvelDomain
 
 protocol DetailHeroePresenterProtocol: AnyObject {
     var ui: DetailHeroeUI? { get set }

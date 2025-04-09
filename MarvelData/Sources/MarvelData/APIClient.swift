@@ -1,14 +1,12 @@
 import Foundation
 
-protocol APIClientProtocol {
+public protocol APIClientProtocol {
     func getHeroes(offset: Int) async throws -> CharacterDataContainer
     func getHeroeDetail(heroeID: Int) async throws -> CharacterDataModel
     var urlSession: URLSession { get }
 }
 
-
-
-final class APIClient: APIClientProtocol {
+public final class APIClient: APIClientProtocol {
     enum Constant {
         static let publicKey = "d575c26d5c746f623518e753921ac847"
         static let limitPerPage = 20
@@ -27,11 +25,13 @@ final class APIClient: APIClientProtocol {
         case offset
     }
     
-    var urlSession: URLSession { URLSession.shared }
+    public let urlSession: URLSession
     
-    init() { }
+    public init(urlSession: URLSession) {
+        self.urlSession = urlSession
+    }
     
-    func getHeroes(offset: Int) async throws -> CharacterDataContainer {
+    public func getHeroes(offset: Int) async throws -> CharacterDataContainer {
         let ts = String(Int(Date().timeIntervalSince1970))
         // This should break if the API key is not available in xcconfig file
         let privateKey = Bundle.main.object(forInfoDictionaryKey: InfoPlistKey.privateKey.rawValue) as! String
@@ -50,7 +50,7 @@ final class APIClient: APIClientProtocol {
             URLQueryItem(name: key, value: value)
         }
         guard let url = urlComponent?.url else {
-            throw NetworkingError.InvalidURL
+            throw NetworkingError.invalidURL
         }
         let urlRequest = URLRequest(url: url)
         
@@ -62,7 +62,7 @@ final class APIClient: APIClientProtocol {
         return dataModel
     }
     
-    func getHeroeDetail(heroeID: Int) async throws -> CharacterDataModel {
+    public func getHeroeDetail(heroeID: Int) async throws -> CharacterDataModel {
         let ts = String(Int(Date().timeIntervalSince1970))
         // This should break if the API key is not available in xcconfig file
         let privateKey = Bundle.main.object(forInfoDictionaryKey: InfoPlistKey.privateKey.rawValue) as! String

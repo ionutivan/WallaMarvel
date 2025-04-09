@@ -1,5 +1,6 @@
 import Foundation
 import UIKit
+import MarvelData
 
 final class DetailHeroeAdapter {
     var heroe: CharacterDataModel? {

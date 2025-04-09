@@ -1,4 +1,6 @@
 import UIKit
+import MarvelData
+import MarvelDomain
 
 class SceneDelegate: UIResponder, UIWindowSceneDelegate {
 
@@ -9,7 +11,8 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
         
         let window = UIWindow(windowScene: windowScene)
         
-        let presenter = ListHeroesPresenter()
+        let getHeroesUseCase = GetHeroes(repository: MarvelRepository(dataSource: MarvelDataSource(apiClient: APIClient(urlSession: .shared))))
+        let presenter = ListHeroesPresenter(getHeroesUseCase: getHeroesUseCase)
         let listHeroesViewController = ListHeroesViewController()
         listHeroesViewController.presenter = presenter
         

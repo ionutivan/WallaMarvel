@@ -1,6 +1,7 @@
 import Foundation
 import UIKit
 import Kingfisher
+import MarvelData
 
 final class ListHeroesTableViewCell: UITableViewCell, Reusable {
     enum Constants {

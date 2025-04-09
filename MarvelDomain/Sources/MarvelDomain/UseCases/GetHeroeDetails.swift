@@ -1,19 +1,20 @@
 import Foundation
+import MarvelData 
 
-protocol GetHeroeDetailsUseCaseProtocol {
+public protocol GetHeroeDetailsUseCaseProtocol {
     func execute() async throws -> CharacterDataModel
 }
 
-struct GetHeroeDetails: GetHeroeDetailsUseCaseProtocol {
+public struct GetHeroeDetails: GetHeroeDetailsUseCaseProtocol {
     private let repository: MarvelRepositoryProtocol
     private let heroeID: Int
     
-    init(heroeID: Int, repository: MarvelRepositoryProtocol = MarvelRepository()) {
+    public init(heroeID: Int, repository: MarvelRepositoryProtocol) {
         self.repository = repository
         self.heroeID = heroeID
     }
     
-    func execute() async throws -> CharacterDataModel {
+    public func execute() async throws -> CharacterDataModel {
         try await repository.getHeroeDetail(heroeID: heroeID)
     }
 }

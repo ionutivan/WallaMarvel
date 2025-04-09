@@ -1,11 +1,12 @@
 import Foundation
 import UIKit
+import MarvelData
 
 final class ListHeroesAdapter: NSObject, UITableViewDataSource {
     var heroes: [CharacterDataModel] {
         didSet {
-            Task { @MainActor in
-                self.tableView.reloadData()
+            Task { @MainActor [weak self] in
+                self?.tableView.reloadData()
             }
         }
     }

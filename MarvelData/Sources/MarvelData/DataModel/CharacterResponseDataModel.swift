@@ -1,18 +1,18 @@
 import Foundation
 
-struct CharacterDataContainer: Decodable {
-    let count: Int
-    let limit: Int
-    let offset: Int
-    let total: Int
-    let characters: [CharacterDataModel]
+public struct CharacterDataContainer: Decodable {
+    public let count: Int
+    public let limit: Int
+    public let offset: Int
+    public let total: Int
+    public let characters: [CharacterDataModel]
     
     enum CodingKeys: String, CodingKey {
         case data
         case count, limit, offset, total, characters = "results"
     }
     
-    init(from decoder: Decoder) throws {
+    public init(from decoder: Decoder) throws {
         let container = try decoder.container(keyedBy: CodingKeys.self)
         let data = try container.nestedContainer(keyedBy: CodingKeys.self, forKey: .data)
         self.count = try data.decode(Int.self, forKey: .count)

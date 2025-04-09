@@ -1,22 +1,22 @@
 import Foundation
 
-protocol MarvelDataSourceProtocol {
+public protocol MarvelDataSourceProtocol {
     func getHeroes(offset: Int) async throws -> CharacterDataContainer
     func getHeroeDetail(heroeID: Int) async throws -> CharacterDataModel
 }
 
-final class MarvelDataSource: MarvelDataSourceProtocol {
+public final class MarvelDataSource: MarvelDataSourceProtocol {
     private let apiClient: APIClientProtocol
     
-    init(apiClient: APIClientProtocol = APIClient()) {
+    public init(apiClient: APIClientProtocol) {
         self.apiClient = apiClient
     }
     
-    func getHeroes(offset: Int) async throws -> CharacterDataContainer {
+    public func getHeroes(offset: Int) async throws -> CharacterDataContainer {
         return try await apiClient.getHeroes(offset: offset)
     }
     
-    func getHeroeDetail(heroeID: Int) async throws -> CharacterDataModel {
+    public func getHeroeDetail(heroeID: Int) async throws -> CharacterDataModel {
         try await apiClient.getHeroeDetail(heroeID: heroeID)
     }
 }

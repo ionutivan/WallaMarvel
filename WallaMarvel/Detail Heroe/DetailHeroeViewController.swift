@@ -1,4 +1,5 @@
 import UIKit
+import MarvelData
 
 final class DetailHeroeViewController: UIViewController {
     var mainView: DetailHeroeView { return view as! DetailHeroeView  }

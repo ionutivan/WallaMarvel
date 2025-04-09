@@ -1,4 +1,6 @@
 import UIKit
+import MarvelData
+import MarvelDomain
 
 final class ListHeroesViewController: UIViewController {
     var mainView: ListHeroesView { return view as! ListHeroesView  }
@@ -45,7 +47,8 @@ extension ListHeroesViewController: UITableViewDelegate {
         guard let selectedHero = listHeroesProvider?.heroes[indexPath.row] else {
             return
         }
-        let presenter = DetailHeroePresenter(getHeroeUseCase: GetHeroeDetails(heroeID: selectedHero.id))
+        let getHeroeUseCase = GetHeroeDetails(heroeID: selectedHero.id, repository: MarvelRepository(dataSource: MarvelDataSource(apiClient: APIClient(urlSession: .shared))))
+        let presenter = DetailHeroePresenter(getHeroeUseCase: getHeroeUseCase)
         let detailHeroeViewController = DetailHeroeViewController()
         detailHeroeViewController.presenter = presenter
         
