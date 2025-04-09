@@ -13,7 +13,9 @@ final class ListHeroesViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         listHeroesProvider = ListHeroesAdapter(tableView: mainView.heroesTableView)
-        presenter?.getHeroes()
+        Task { [weak self] in
+            await self?.presenter?.getHeroes()
+        }
         presenter?.ui = self
         
         title = presenter?.screenTitle()
@@ -23,18 +25,42 @@ final class ListHeroesViewController: UIViewController {
 }
 
 extension ListHeroesViewController: ListHeroesUI {
-    func update(heroes: [CharacterDataModel]) {
-        listHeroesProvider?.heroes = heroes
+    func update(heroes: Result<[CharacterDataModel], Error>) {
+        switch heroes {
+            case let .success(characters):
+                listHeroesProvider?.heroes.append(contentsOf: characters)
+            case .failure:
+                let alert = UIAlertController(title: "Error",
+                                              message: "An unknown error occurred",
+                                              preferredStyle: .alert)
+                alert.addAction(UIAlertAction(title: "OK", style: .default))
+                present(alert, animated: true)
+        }
     }
 }
 
 extension ListHeroesViewController: UITableViewDelegate {
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
-        let presenter = ListHeroesPresenter()
-        let listHeroesViewController = ListHeroesViewController()
-        listHeroesViewController.presenter = presenter
+        tableView.deselectRow(at: indexPath, animated: true)
+        guard let selectedHero = listHeroesProvider?.heroes[indexPath.row] else {
+            return
+        }
+        let presenter = DetailHeroePresenter(getHeroeUseCase: GetHeroeDetails(heroeID: selectedHero.id))
+        let detailHeroeViewController = DetailHeroeViewController()
+        detailHeroeViewController.presenter = presenter
         
-        navigationController?.pushViewController(listHeroesViewController, animated: true)
+        navigationController?.pushViewController(detailHeroeViewController, animated: true)
+    }
+    
+    func tableView(_ tableView: UITableView, willDisplay cell: UITableViewCell, forRowAt indexPath: IndexPath) {
+        guard let heroes = listHeroesProvider?.heroes else {
+            return
+        }
+        if indexPath.row == heroes.count - 1 {
+            Task { [weak self] in
+                await self?.presenter?.getHeroes()
+            }
+        }
     }
 }
 

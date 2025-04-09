@@ -4,7 +4,7 @@ import UIKit
 final class ListHeroesAdapter: NSObject, UITableViewDataSource {
     var heroes: [CharacterDataModel] {
         didSet {
-            DispatchQueue.main.async {
+            Task { @MainActor in
                 self.tableView.reloadData()
             }
         }
@@ -24,7 +24,7 @@ final class ListHeroesAdapter: NSObject, UITableViewDataSource {
     }
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-        let cell = tableView.dequeueReusableCell(withIdentifier: "ListHeroesTableViewCell", for: indexPath) as! ListHeroesTableViewCell
+        let cell = tableView.dequeueReusableCell(withIdentifier: ListHeroesTableViewCell.reuseIdentifier, for: indexPath) as! ListHeroesTableViewCell
         
         let model = heroes[indexPath.row]
         cell.configure(model: model)
