@@ -2,7 +2,7 @@ import Foundation
 import UIKit
 import Kingfisher
 
-final class ListHeroesTableViewCell: UITableViewCell {
+final class ListHeroesTableViewCell: UITableViewCell, Reusable {
     private let heroeImageView: UIImageView = {
         let imageView = UIImageView()
         imageView.translatesAutoresizingMaskIntoConstraints = false
