@@ -1,5 +1,5 @@
 import Foundation
-import MarvelData
+@preconcurrency import MarvelData
 import MarvelDomain
 
 protocol ListHeroesPresenterProtocol: AnyObject {
@@ -42,12 +42,16 @@ final class ListHeroesPresenter: ListHeroesPresenterProtocol {
             #if DEBUG
                 print("Characters \(characterDataContainer.characters)")
             #endif
-            ui?.update(heroes: .success(characterDataContainer.characters))
+            DispatchQueue.main.async { [weak self] in
+                self?.ui?.update(heroes: .success(characterDataContainer.characters))
+            }
             offset += characterDataContainer.characters.count
             allHeroesLoaded = characterDataContainer.characters.count < Constants.limit
             isLoading = false
         } catch {
-            ui?.update(heroes: .failure(error))
+            DispatchQueue.main.async { [weak self] in
+                self?.ui?.update(heroes: .failure(error))
+            }
         }
 
     }

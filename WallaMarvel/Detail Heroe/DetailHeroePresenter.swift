@@ -1,5 +1,5 @@
 import Foundation
-import MarvelData
+@preconcurrency import MarvelData
 import MarvelDomain
 
 protocol DetailHeroePresenterProtocol: AnyObject {
@@ -32,9 +32,13 @@ final class DetailHeroePresenter: DetailHeroePresenterProtocol {
             #if DEBUG
                 print("Character \(character)")
             #endif
-            ui?.update(heroe: .success(character))
+            DispatchQueue.main.async { [weak self] in
+                self?.ui?.update(heroe: .success(character))
+            }
         } catch {
-            ui?.update(heroe: .failure(error))
+            DispatchQueue.main.async { [weak self] in
+                self?.ui?.update(heroe: .failure(error))
+            }
         }
         
     }
