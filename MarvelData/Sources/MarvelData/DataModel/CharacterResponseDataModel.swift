@@ -1,6 +1,6 @@
 import Foundation
 
-public struct CharacterDataContainer: Decodable {
+public struct CharacterDataContainer: Decodable, Equatable {
     public let count: Int
     public let limit: Int
     public let offset: Int

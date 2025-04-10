@@ -3,7 +3,7 @@ import Foundation
 public protocol APIClientProtocol {
     func getHeroes(offset: Int) async throws -> CharacterDataContainer
     func getHeroeDetail(heroeID: Int) async throws -> CharacterDataModel
-    var urlSession: URLSession { get }
+    var urlSession: NetworkSession { get }
 }
 
 public final class APIClient: APIClientProtocol {
@@ -25,16 +25,15 @@ public final class APIClient: APIClientProtocol {
         case offset
     }
     
-    public let urlSession: URLSession
+    public let urlSession: NetworkSession
     
-    public init(urlSession: URLSession) {
+    public init(urlSession: NetworkSession) {
         self.urlSession = urlSession
     }
     
     public func getHeroes(offset: Int) async throws -> CharacterDataContainer {
         let ts = String(Int(Date().timeIntervalSince1970))
-        // This should break if the API key is not available in xcconfig file
-        let privateKey = Bundle.main.object(forInfoDictionaryKey: InfoPlistKey.privateKey.rawValue) as! String
+        let privateKey = Bundle.main.object(forInfoDictionaryKey: InfoPlistKey.privateKey.rawValue) ?? "test key"
         let publicKey = Constant.publicKey
         let hash = "\(ts)\(privateKey)\(publicKey)".md5
         let parameters: [String: String] = [URLParameter.apikey.rawValue: publicKey,
@@ -64,8 +63,7 @@ public final class APIClient: APIClientProtocol {
     
     public func getHeroeDetail(heroeID: Int) async throws -> CharacterDataModel {
         let ts = String(Int(Date().timeIntervalSince1970))
-        // This should break if the API key is not available in xcconfig file
-        let privateKey = Bundle.main.object(forInfoDictionaryKey: InfoPlistKey.privateKey.rawValue) as! String
+        let privateKey = Bundle.main.object(forInfoDictionaryKey: InfoPlistKey.privateKey.rawValue) ?? "test key"
         let publicKey = Constant.publicKey
         let hash = "\(ts)\(privateKey)\(publicKey)".md5
         let parameters: [String: String] = [URLParameter.apikey.rawValue: publicKey,
@@ -94,3 +92,10 @@ public final class APIClient: APIClientProtocol {
 enum NetworkingError: Error {
     case invalidURL
 }
+
+public protocol NetworkSession {
+    func data(for url: URLRequest) async throws -> (Data, URLResponse)
+}
+
+extension URLSession : NetworkSession {}
+    

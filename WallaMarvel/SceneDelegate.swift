@@ -11,7 +11,7 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
         
         let window = UIWindow(windowScene: windowScene)
         
-        let getHeroesUseCase = GetHeroes(repository: MarvelRepository(dataSource: MarvelDataSource(apiClient: APIClient(urlSession: .shared))))
+        let getHeroesUseCase = GetHeroes(repository: MarvelRepository(dataSource: MarvelDataSource(apiClient: APIClient(urlSession: URLSession.shared))))
         let presenter = ListHeroesPresenter(getHeroesUseCase: getHeroesUseCase)
         let listHeroesViewController = ListHeroesViewController()
         listHeroesViewController.presenter = presenter

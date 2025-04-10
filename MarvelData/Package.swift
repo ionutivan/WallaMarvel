@@ -20,7 +20,8 @@ let package = Package(
         ),
         .testTarget(
             name: "MarvelDataTests",
-            dependencies: ["MarvelData"]
+            dependencies: ["MarvelData"],
+            resources: [.process("Data.json")]
         ),
     ]
 )

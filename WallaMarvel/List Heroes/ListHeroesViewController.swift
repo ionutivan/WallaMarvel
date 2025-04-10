@@ -47,7 +47,7 @@ extension ListHeroesViewController: UITableViewDelegate {
         guard let selectedHero = listHeroesProvider?.heroes[indexPath.row] else {
             return
         }
-        let getHeroeUseCase = GetHeroeDetails(heroeID: selectedHero.id, repository: MarvelRepository(dataSource: MarvelDataSource(apiClient: APIClient(urlSession: .shared))))
+        let getHeroeUseCase = GetHeroeDetails(heroeID: selectedHero.id, repository: MarvelRepository(dataSource: MarvelDataSource(apiClient: APIClient(urlSession: URLSession.shared))))
         let presenter = DetailHeroePresenter(getHeroeUseCase: getHeroeUseCase)
         let detailHeroeViewController = DetailHeroeViewController()
         detailHeroeViewController.presenter = presenter
