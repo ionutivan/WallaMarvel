@@ -39,6 +39,10 @@ extension ListHeroesViewController: ListHeroesUI {
                 present(alert, animated: true)
         }
     }
+    var spinnerVisibility: Bool {
+        get { !mainView.spinnerView.isHidden }
+        set { mainView.spinnerView.isHidden = !newValue }
+    }
 }
 
 extension ListHeroesViewController: UITableViewDelegate {

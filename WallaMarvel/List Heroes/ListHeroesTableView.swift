@@ -6,6 +6,8 @@ final class ListHeroesView: UIView {
         static let estimatedRowHeight: CGFloat = 120
     }
     
+    let spinnerView = UIActivityIndicatorView(style: .medium)
+    
     let heroesTableView: UITableView = {
         let tableView = UITableView()
         tableView.register(ListHeroesTableViewCell.self, forCellReuseIdentifier: ListHeroesTableViewCell.reuseIdentifier)
@@ -27,6 +29,8 @@ final class ListHeroesView: UIView {
     private func setup() {
         addSubviews()
         addContraints()
+        spinnerView.startAnimating()
+        heroesTableView.tableFooterView = spinnerView
     }
     
     private func addSubviews() {

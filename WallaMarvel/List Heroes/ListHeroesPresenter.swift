@@ -10,6 +10,7 @@ protocol ListHeroesPresenterProtocol: AnyObject {
 
 protocol ListHeroesUI: AnyObject {
     func update(heroes: Result<[CharacterDataModel], Error>)
+    var spinnerVisibility: Bool { get set }
 }
 
 final class ListHeroesPresenter: ListHeroesPresenterProtocol {
@@ -37,6 +38,9 @@ final class ListHeroesPresenter: ListHeroesPresenterProtocol {
     func getHeroes() async {
         guard !isLoading, !allHeroesLoaded else { return }
         isLoading = true
+        DispatchQueue.main.async { [weak self] in
+            self?.ui?.spinnerVisibility = true
+        }
         do {
             let characterDataContainer = try await getHeroesUseCase.execute(offset: offset)
             #if DEBUG
@@ -44,6 +48,7 @@ final class ListHeroesPresenter: ListHeroesPresenterProtocol {
             #endif
             DispatchQueue.main.async { [weak self] in
                 self?.ui?.update(heroes: .success(characterDataContainer.characters))
+                self?.ui?.spinnerVisibility = false
             }
             offset += characterDataContainer.characters.count
             allHeroesLoaded = characterDataContainer.characters.count < Constants.limit
@@ -51,6 +56,7 @@ final class ListHeroesPresenter: ListHeroesPresenterProtocol {
         } catch {
             DispatchQueue.main.async { [weak self] in
                 self?.ui?.update(heroes: .failure(error))
+                self?.ui?.spinnerVisibility = false
             }
         }
 
